@@ -1,236 +1,127 @@
+* { box-sizing: border-box; }
+
 .kitchen-wrapper {
-  background-color: #ffffff;
-  min-height: 100vh;
-  padding: 20px;
-  font-family: 'Arial Black', 'Helvetica Bold', sans-serif;
-  color: #000000;
+  background-color: #f4ece1; 
+  background-image: 
+    linear-gradient(90deg, rgba(166, 139, 109, 0.1) 1px, transparent 1px),
+    linear-gradient(rgba(166, 139, 109, 0.1) 1px, transparent 1px);
+  background-size: 30px 30px;
+  
+  height: 100vh; 
+  display: flex;
+  flex-direction: column;
+  font-family: 'Arial Black', sans-serif;
+  overflow: hidden;
 }
 
 .view-title {
-  text-align: center;
-  margin-bottom: 30px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  -webkit-text-stroke: 1px #000;
+  height: 60px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 4px solid #000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
+/* KANBAN LAYOUT */
 #dashboard {
   display: flex;
-  justify-content: center;
-  gap: 20px;
+  flex: 1;
+  padding: 15px;
+  gap: 15px; 
   overflow-x: auto;
-  padding-bottom: 20px;
 }
 
-.status {
-  background-color: #ffffff;
-  width: 300px;
-  min-height: 500px;
-  border-radius: 15px; 
+/* COLUMN STYLING */
+.status-column {
+  flex: 1;
+  min-width: 280px;
   display: flex;
   flex-direction: column;
-  border: 4px solid #000000;
-  overflow: hidden; 
+  background-color: #fdfaf5; 
+  border: 3px solid #000;
+  border-radius: 12px;
+  box-shadow: 6px 6px 0px rgba(0,0,0,0.1);
 }
+
+/* COLOR CODING BASE SA GUIDELINES */
+#pending .status-header { background-color: #f1c40f; color: #000; }
+#preparing .status-header { background-color: #3498db; color: #fff; }
+#ready .status-header { background-color: #2ecc71; color: #000; }
+#serve .status-header { background-color: #000; color: #fff; }
 
 .status-header {
   padding: 15px;
   text-align: center;
   font-weight: bold;
-  background-color: #000000;
-  color: #ffffff;
-  letter-spacing: 1px;
+  border-bottom: 3px solid #000;
 }
 
 .card-container {
-  padding: 15px;
-  flex-grow: 1;
-  background-color: #f9f9f9; 
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto; /* Scrollable internal area */
 }
 
-/* ORDER CARDS LOGIC */
+/* ORDER CARDS */
 .order-card {
-  background-color: #ffffff;
-  color: #000000;
-  padding: 15px;
-  margin-bottom: 12px;
-  border-radius: 8px; 
-  border: 3px solid #000000;
-  transition: 0.2s ease;
-}
-
-.order-card.is-locked {
-  background-color: #d3d3d3;
-  border-color: #7f8c8d;
-  cursor: not-allowed; /* Pulang bilog na may slash */
-  opacity: 0.7;
-}
-
-.order-card.is-ready {
-  background-color: #ffffff;
-  cursor: grab;
+  background: #ffffff;
+  border: 2px solid #000;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
   box-shadow: 4px 4px 0px #000;
-  animation: pulse 2s infinite; /* Para alam nilang pwede na i-drag */
+  transition: transform 0.2s;
 }
-
-.order-card.is-ready:active {
-  cursor: grabbing;
-  transform: translate(2px, 2px);
-}
-
-/* BORDERS PER COLUMN */
-#pending .order-card.is-locked { border-left: 12px solid #7f8c8d; }
-#pending .order-card.is-ready { border-left: 12px solid #f1c40f; }
-#preparing .order-card { border-left: 12px solid #3498db; }
-#ready .order-card { border-left: 12px solid #2ecc71; }
-#serve .order-card, #served .order-card { border-left: 12px solid #95a5a6; }
 
 .card-top {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
-  font-size: 0.9em;
-  border-bottom: 2px solid #000000; 
+  border-bottom: 1px solid #ddd;
   padding-bottom: 5px;
+  margin-bottom: 10px;
 }
 
-.checklist {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin: 10px 0;
-  padding: 10px;
-  background: rgba(0,0,0,0.05);
+/* INTERACTION LOGIC: The "Not-Allowed" Fix */
+.is-locked {
+  cursor: not-allowed !important;
+  opacity: 0.6;
+  background-color: #eee !important;
+}
+.is-locked * { pointer-events: none; }
+.is-locked .checklist, .is-locked input { pointer-events: auto; } /* Except checklist */
+
+.is-ready { cursor: grab; }
+.is-ready:active { cursor: grabbing; }
+
+/* TYPE TAGS: Dine-in / Take-out */
+.type-tag {
+  font-size: 0.7em;
+  padding: 2px 8px;
   border: 1px solid #000;
+  font-weight: bold;
 }
+.dine-in { background: #fff; color: #000; }
+.take-out { background: #000; color: #fff; }
 
-.check-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer !important; 
-  font-size: 0.9em;
+/* NOW SERVING BOX: Customer visibility view */
+.now-serving-box {
+  border: 3px dashed #000;
+  padding: 20px 10px;
+  text-align: center;
 }
+.order-number-display { font-size: 2.2em; margin: 0; }
 
-.strikethrough {
-  text-decoration: line-through;
-  color: #888;
-}
-
+/* CHECKLIST & TEXT */
+.checklist { margin-top: 10px; font-size: 0.9em; }
+.strikethrough { text-decoration: line-through; color: #888; }
 .serve-btn {
   width: 100%;
-  background-color: #2ecc71;
-  color: #000;
+  background: #2ecc71;
   border: 2px solid #000;
   font-weight: bold;
   padding: 10px;
   cursor: pointer;
-  box-shadow: 2px 2px 0px #000;
   margin-top: 10px;
 }
-
-/* Container para sa buong card */
-.now-serving-container {
-  padding: 10px;
-  background-color: #ffffff;
-}
-
-
-.now-serving-box {
-  border: 3px dashed #000000;
-  padding: 20px 20px;
-  text-align: center;
-  border-radius: 5px;
-  background-color: #fff;
-}
-
-/* Bold Order Number display */
-.order-number-display {
-  font-size: 2em; 
-  font-family: 'Arial Black', sans-serif;
-  margin: 0;
-  color: #000;
-}
-
-/* Pickup instructions text */
-.pickup-text {
-  font-size: 1.1em;
-  font-weight: 900;
-  letter-spacing: 1px;
-  margin-top: 15px;
-  color: #000;
-  text-transform: uppercase;
-}
-
-
-#serve {
-  min-width: 300px; 
-  border: 5px solid #000;
-}
-
-#serve .status-header {
-  font-size: 1em;
-  padding: 15px;
-}
-
-
-#preparing .order-card {
-  border-left: 10px solid #3498db; 
-}
-
-
-/* Kapag hindi pa pwedeng i-drag (Locked State) */
-.order-card.is-locked {
-  background-color: #d3d3d3 !important;
-  border-color: #7f8c8d !important;
-  opacity: 0.7;
-  cursor: not-allowed !important; 
-  pointer-events: auto; 
-}
-
-/* Para hindi ma-drag ang text/image sa loob habang locked */
-.is-locked * {
-  pointer-events: none; 
-}
-
-/* clickable pa rin ang checklist area */
-.is-locked .checklist, 
-.is-locked .check-item, 
-.is-locked input {
-  pointer-events: auto !important;
-}
-
-
-.is-locked label, .is-locked input {
-  pointer-events: auto;
-}
-
-
-/* Kapag handa na i-drag (Ready State) */
-.order-card.ready-to-move {
-  cursor: grab !important;
-  background-color: #ffffff !important;
-  opacity: 1 !important;
-  box-shadow: 4px 4px 0px #000;
-  animation: pulse 2s infinite;
-  pointer-events: auto !important;
-}
-
-.order-card.ready-to-move:active {
-  cursor: grabbing !important;
-}
-
-/* Items styling sa loob ng Preparing */
-.items-static {
-  list-style: none;
-  padding: 0;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.item-done {
-  color: #888;
-  text-decoration: line-through;
-}
-
-.serve-btn:hover { background-color: #27ae60; }
