@@ -45,7 +45,7 @@
   box-shadow: 6px 6px 0px rgba(0,0,0,0.1);
 }
 
-/* COLOR CODING BASE SA GUIDELINES */
+/* COLOR CODING */
 #pending .status-header { background-color: #f1c40f; color: #000; }
 #preparing .status-header { background-color: #3498db; color: #fff; }
 #ready .status-header { background-color: #2ecc71; color: #000; }
