@@ -12,7 +12,7 @@ const App = () => {
         { name: 'Iced Tea', checked: false }
       ], 
       status: 'queue', 
-      type: 'Dine-in', // Galing sa Cashier View selection
+      type: 'Dine-in', 
       time: '02:55 PM' 
     },
     { 
@@ -61,7 +61,7 @@ const App = () => {
 
     // RULE: Next status only. Bawal lumaktaw ng column.
     if (targetIndex === currentIndex + 1) {
-      // RULE: Bawal mag-Preparing kung hindi pa checked lahat sa Pending
+      // RULE: Bawal mapunta sa Preparing kung hindi pa checked lahat sa Pending
       if (targetStatus === 'preparing' && !order.items.every(item => item.checked)) return;
       
       setOrders(prev => prev.map(o => 
@@ -70,14 +70,13 @@ const App = () => {
     }
   };
 
-  // SERVE BUTTON: Naglilipat ng order sa final column
+  // SERVE BUTTON
   const handleServe = (id) => {
     setOrders(prev => prev.map(o => o.orderId === id ? { ...o, status: 'serve' } : o));
   };
 
   return (
     <div className="kitchen-wrapper">
-      {/* HEADER: Base sa branding ng FamilyFOOD Menu */}
       <header className="view-title">
         <h1>FAMILYFOOD - KITCHEN CONTROL SYSTEM</h1>
       </header>
@@ -112,7 +111,7 @@ const App = () => {
                       <strong>T-{o.table}</strong>
                     </div>
 
-                    {/* DYNAMIC CONTENT BASE SA COLUMN */}
+                    
                     {status === 'pending' ? (
                       <div className="checklist">
                         {o.items.map((item, idx) => (
