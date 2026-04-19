@@ -1,37 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 
-const App = () => {
-  // INITIAL STATE: Listahan ng orders na may Dine-in/Take-out info
-  const [orders, setOrders] = useState([
-    { 
-      orderId: 'ORD-101', 
-      table: '5', 
-      items: [
-        { name: '1pc Porkchop Meal', checked: false },
-        { name: 'Iced Tea', checked: false }
-      ], 
-      status: 'queue', 
-      type: 'Dine-in', 
-      time: '02:55 PM' 
-    },
-    { 
-      orderId: 'ORD-102', 
-      table: '2', 
-      items: [
-        { name: 'Cheeseburger', checked: false },
-        { name: 'Fries', checked: false }
-      ], 
-      status: 'queue',
-      type: 'Take-out',
-      time: '03:10 PM' 
-    }
-  ]);
+const KitchenView = ({ orders, setOrders, onUpdateStatus }) => {
 
-  //  Pagkakasunod-sunod ng proseso
+  // WORKFLOW CONFIGURATION: Pagkakasunod-sunod ng proseso
   const statusList = ['queue', 'pending', 'preparing', 'ready', 'serve'];
 
-  //  Pinapalitan ang status ng mga pagkain
+  // CHECKLIST LOGIC: Pinapalitan ang check status ng mga pagkain
   const toggleItemCheck = (orderId, itemName) => {
     setOrders(prev => prev.map(order => {
       if (order.orderId === orderId) {
@@ -61,7 +36,7 @@ const App = () => {
 
     // RULE: Next status only. Bawal lumaktaw ng column.
     if (targetIndex === currentIndex + 1) {
-      // RULE: Bawal mapunta sa Preparing kung hindi pa checked lahat sa Pending
+      // RULE: Bawal mag-Preparing kung hindi pa checked lahat sa Pending
       if (targetStatus === 'preparing' && !order.items.every(item => item.checked)) return;
       
       setOrders(prev => prev.map(o => 
@@ -70,17 +45,13 @@ const App = () => {
     }
   };
 
-  // SERVE BUTTON
+  // SERVE BUTTON: Naglilipat ng order sa final column
   const handleServe = (id) => {
     setOrders(prev => prev.map(o => o.orderId === id ? { ...o, status: 'serve' } : o));
   };
 
   return (
     <div className="kitchen-wrapper">
-      <header className="view-title">
-        <h1>FAMILYFOOD - KITCHEN CONTROL SYSTEM</h1>
-      </header>
-      
       <div id="dashboard">
         {statusList.map((status) => (
           <div 
@@ -111,7 +82,7 @@ const App = () => {
                       <strong>T-{o.table}</strong>
                     </div>
 
-                    
+                    {/* DYNAMIC CONTENT BASE SA COLUMN */}
                     {status === 'pending' ? (
                       <div className="checklist">
                         {o.items.map((item, idx) => (
@@ -154,4 +125,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default KitchenView;
