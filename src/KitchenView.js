@@ -28,10 +28,10 @@ const App = () => {
     }
   ]);
 
-  // WORKFLOW CONFIGURATION: Pagkakasunod-sunod ng proseso
+  //  Pagkakasunod-sunod ng proseso
   const statusList = ['queue', 'pending', 'preparing', 'ready', 'serve'];
 
-  // CHECKLIST LOGIC: Pinapalitan ang check status ng mga pagkain
+  //  Pinapalitan ang status ng mga pagkain
   const toggleItemCheck = (orderId, itemName) => {
     setOrders(prev => prev.map(order => {
       if (order.orderId === orderId) {
